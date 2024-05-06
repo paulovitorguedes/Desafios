@@ -1,5 +1,31 @@
 <?php
 
+$expressao = array();
+$fileName = realpath("d14.txt");
+
+if (file_exists($fileName)) {
+    $file = fopen($fileName, "r");
+
+    while (!feof($file)) {
+        $expressao[] = preg_replace('/[^0-9+\-.*\/()%]/', '', fgets($file));
+    }
+
+    fclose($file);
+}
+
+// Verifica se a expressão foi fornecida
+if (count($expressao) > 0) {
+    // Calcula e exibe o resultado da expressão
+    $resultado = calcularExpressao($expressao);
+    echo "O resultado da expressão $expressao é: $resultado";
+} else {
+    echo "Por favor, forneça uma expressão para calcular.";
+}
+
+
+
+
+
 // Função para validar a expressão matemática
 function validarExpressao($expressao)
 {
@@ -30,26 +56,12 @@ function calcularExpressao($expressao)
         return $resultado;
     } catch (Exception $e) {
         return 'Erro: ' . $e->getMessage();
-    
+
     } catch (Error $e) {
         echo var_dump($e);
         echo $e->getMessage();
     }
 
-}
-
-// Recebe a variável 'conta' da query string
-// $expressao = $_GET['conta'] ?? '';
-$expressao = "5 + 1";
-$expressao =  preg_replace('/[^0-9+\-.*\/()%]/', '', $expressao);
-
-// Verifica se a expressão foi fornecida
-if (!empty($expressao)) {
-    // Calcula e exibe o resultado da expressão
-    $resultado = calcularExpressao($expressao);
-    echo "O resultado da expressão $expressao é: $resultado";
-} else {
-    echo "Por favor, forneça uma expressão para calcular.";
 }
 
 
